@@ -37,6 +37,8 @@ public class RecipeUI {
                 switch (choice) {
                     case "1":
                         // 設問1: 一覧表示機能
+                        
+                        
                         break;
                     case "2":
                         // 設問2: 新規登録機能
@@ -61,8 +63,25 @@ public class RecipeUI {
      * 設問1: 一覧表示機能
      * RecipeFileHandlerから読み込んだレシピデータを整形してコンソールに表示します。
      */
-    private void displayRecipes() {
+    private void displayRecipes(Array<String> recipes) {
+        try {
+            if(recipes != null) {
+                System.out.println("No recipes available.");
+            } else {
+                System.out.println("Recipes:");
+                System.out.println("-----------------------------------");
 
+                //レシピを開業で分割して行ごとに処理をする
+
+                //カンマで単語　区切る
+
+                //最初の単語を表示
+
+                //残りの行表示
+            }
+        } catch (IOException e) {
+
+        }
     }
 
     /**
