@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import data.RecipeFileHandler;
 
@@ -37,11 +38,11 @@ public class RecipeUI {
                 switch (choice) {
                     case "1":
                         // 設問1: 一覧表示機能
-                        
-                        
+                        displayRecipes();
                         break;
                     case "2":
                         // 設問2: 新規登録機能
+                        addNewRecipe();
                         break;
                     case "3":
                         // 設問3: 検索機能
@@ -63,26 +64,36 @@ public class RecipeUI {
      * 設問1: 一覧表示機能
      * RecipeFileHandlerから読み込んだレシピデータを整形してコンソールに表示します。
      */
-    private void displayRecipes(Array<String> recipes) {
-        try {
-            if(recipes != null) {
-                System.out.println("No recipes available.");
-            } else {
-                System.out.println("Recipes:");
+    private void displayRecipes() {
+        ArrayList<String> recipes = fileHandler.readRecipes();
+    
+        if (recipes.isEmpty()) {
+            System.out.println("No recipes available.");
+        } else {
+            System.out.println("Recipes:");
+            System.out.println("-----------------------------------");
+            for (String recipe : recipes) {
+                String[] parts = recipe.split(","); // カンマで分割 partsに 改行で0から
+                if (parts.length >= 2) {                  //長さは１から　１は含めいないので２から
+                    String recipeName = parts[0].trim(); // １は含めいないけど番地は0
+    
+                    String reset = ""; // 材料の文字列を初期化　
+                    for (int i = 1; i < parts.length; i++) {    //partsの長さは分割した数の１を抜くので２よりおおきいとき
+                        if (i > 1) {
+                            reset += ", "; // 最初の材料以外にはカンマとスペースを追加
+                        }
+                        reset += parts[i].trim(); // 材料を追加
+                    }
+    
+                    // レシピ名と材料を表示
+                    System.out.println("Recipe Name: " + recipeName);
+                    System.out.println("Main Ingredients: " + reset);
+                }
                 System.out.println("-----------------------------------");
-
-                //レシピを開業で分割して行ごとに処理をする
-
-                //カンマで単語　区切る
-
-                //最初の単語を表示
-
-                //残りの行表示
             }
-        } catch (IOException e) {
-
         }
     }
+    
 
     /**
      * 設問2: 新規登録機能
@@ -92,6 +103,15 @@ public class RecipeUI {
      */
     private void addNewRecipe() throws IOException {
 
+        System.out.print("Enter recipe name: ");
+        String recipeName = reader.readLine();  //レシピ名
+    
+        System.out.print("Enter main ingredients (comma separated): ");
+        String ingredients = reader.readLine(); //材料
+    
+        fileHandler.addRecipe(recipeName, ingredients);  //入力した内容をaddRecipe()に返す
+    
+        System.out.println("Recipe added successfully.");
     }
 
     /**
@@ -105,4 +125,3 @@ public class RecipeUI {
     }
 
 }
-
